@@ -101,6 +101,8 @@ bot
 %                      (should be rel12)
                beer_
                small_
+               fall_
+               wheelbarrow_
                time_prec 
                rel12 arg2:cont
                   location_
