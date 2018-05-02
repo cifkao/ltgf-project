@@ -1,0 +1,119 @@
+% LTGF
+% GRAMMAR 7
+% synsem, index, n_agr/v_agr
+% hc/ha-phrase, mod, advb, adj
+% arg1...:nom_obj
+% prep na/acc,loc modif. V, N
+% h_init:plus do ss (postmodification N PP)
+% nonlexical prep (toužit po)
+% copula, pred +/-
+
+% Signature
+
+type_hierarchy
+bot
+   sign phon:list ss:synsem h_init:bool 
+      word
+      phrase head_dtr:sign nonh_dtr:sign dtrs:list
+         hc_phrase
+         ha_phrase
+   synsem cat:cat cont:cont
+   cat head:head val:val 
+   val subj:list comps:list
+   head mod:list pred:bool
+      flective agr:agr
+         nominal agr:n_agr case:case
+            noun
+            adj
+         vfin agr:v_agr vform:vform
+      nonflective
+         vinf
+         advb
+         prep pform:pform
+      verb 
+         vfin 
+         vinf 
+   agr num_a:num gend_a:gend
+      n_agr case_a:case
+      v_agr pers_a:pers
+   vform
+      pres
+      past 
+   pform
+      lexical
+         na_acc
+         na_loc
+      non_lexical
+         po_loc
+   num
+      sg
+      pl
+   gend
+      mf
+         m
+            ma
+            mi
+         f_mi
+            f
+            mi
+      mn
+         m
+         n
+   pers
+      first
+      second
+      third
+   case
+      nom_acc
+         nom
+         acc
+      dat_loc
+         dat
+         loc
+      ins
+   bool
+      plus
+      minus
+   cont_or_index
+      cont 
+         nom_obj idx:index restr:list
+         rel
+            rel0
+               rain_ 
+            rel1 arg1:cont_or_index
+               well_
+               at_home_
+               graze_
+               sleep_
+               run_
+               boy_
+               goat_
+               girl_
+               child_
+               puppy_
+               kitten_
+               joe_
+               molly_
+               kiss_
+               book_
+               meadow_
+               caress_
+%                      (should be rel12)
+               beer_
+               small_
+               time_prec 
+               rel12 arg2:cont
+                  location_
+                  direction_
+                  want_
+                  chase_
+                  graze_
+                  understand_
+                  desire_
+                  rel123 arg3:cont
+                     give_
+      index num:num gend:gend pers:pers              
+   list
+      ne_list hd:bot tl:list
+      e_list
+.

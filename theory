@@ -1,0 +1,643 @@
+% LTGF
+% Grammmar 7 -- synsem, index, nom_agr/verb_agr
+% Theory
+
+:- discontiguous '*>'/2.
+:- discontiguous 'fun'/1.
+:- tree_extensions.
+:- multifile if/2.
+:- discontiguous 'if'/2.
+
+hidden_feat(dtrs). 
+>>> phon.
+>>> ss.
+>>> subj.
+>>> vform.
+>>> case.
+>>> pform.
+
+% DEFINITIONS OF MACROS
+
+% empty valency
+
+empty := (subj:e_list,
+          comps:e_list). 
+
+saturated := (ss:cat:val:(@empty)).
+
+
+% nouns
+
+nn(Gend-gend,Num-num,Pers-pers,Case-case,Rel-rel) :=
+   (word,
+     ss:(cat:(head:(noun,
+                  mod:e_list,
+                  pred:minus,
+                  case:Case,
+                  agr:(num_a:Num,
+                       gend_a:Gend)),
+            val: @empty),
+        cont:(idx:(Idx,
+		   pers:Pers),
+	      restr:[(Rel,
+		      arg1:Idx)]))).
+
+nnval(Case-case,Nom_obj-nom_obj) :=
+   (synsem,
+    cat:(head:(noun,
+               case:Case),
+         val: @empty),
+    cont:Nom_obj).
+
+
+% adjectives
+
+aa(Gend-gend,Num-num,Case-case,Rel-rel) :=
+   ((word,
+     ss:(cat:(head:(adj,
+                   pred:minus,
+                   mod:[(cat:head:(noun,
+                                 agr:Agr),
+                        cont:(idx:Index,
+                              restr:NRestr))],
+                   case:Case,
+                   agr:(Agr,
+                        num_a:Num,
+                        gend_a:Gend,
+                        case_a:Case)),
+            val: @empty),
+        cont:(idx:Index,
+	      restr:append(NRestr,[(Rel,arg1:Index)]))));
+   (word,
+    ss:(cat:(head:(adj,
+                   pred:plus,
+                   mod:[],
+                   case:Case,
+                   agr:(Agr,
+                        num_a:Num,
+                        gend_a:Gend,
+                        case_a:Case)),
+            val:(subj:[@nnval(_,Arg1)],
+                 comps:[])),
+       cont:(Rel,
+             arg1:Arg1)))).
+
+
+% verbs
+
+vv(Vform-vform,Gend-gend,Num-num,Pers-pers,Val-val,Rel-rel) :=
+   (word,
+    ss:(cat:(head:(vfin,
+                  vform:Vform,
+                  pred:minus,
+                  agr:(num_a:Num,
+                       gend_a:Gend,
+                       pers_a:Pers),
+                  mod:e_list),
+             val:Val),
+	cont:Rel)).
+
+vinf(Val-val,Rel-rel) :=
+   (word,
+    ss:(cat:(head:(vinf,
+                   pred:minus,
+                   mod:e_list),
+             val:Val),
+        cont:Rel)). 
+
+vinfval(Val-val,Rel-rel) :=
+   (synsem,
+    cat:(head:vinf,
+         val:Val),
+    cont:Rel). 
+
+vi(Vform-vform,Gend-gend,Num-num,Pers-pers,Rel-rel) := 
+     @vv(Vform,Gend,Num,Pers,
+        (subj:[@nnval(nom,Arg1)],comps:[]),
+        (Rel,arg1:Arg1)).
+
+vt(Vform-vform,Gend-gend,Num-num,Pers-pers,Case-case,Rel-rel) :=
+   @vv(Vform,Gend,Num,Pers,
+       (subj:[@nnval(nom,Arg1)],
+        comps:[@nnval(Case,Arg2)]),
+       (Rel,arg1:Arg1,arg2:Arg2)).
+
+vd(Vform-vform,Gend-gend,Num-num,Pers-pers,Case1-case,Case2-case,Rel-rel123) :=
+    @vv(Vform,Gend,Num,Pers,
+        (subj:[@nnval(nom,Arg1)],
+         comps:[@nnval(Case1,Arg2),
+                @nnval(Case2,Arg3)]),
+        (Rel,arg1:Arg1,arg2:Arg2,arg3:Arg3)).
+
+
+% LEXICON
+
+% nouns
+
+pepa  ~~> @nn(ma,sg,third,nom,joe_).
+pepovi  ~~> @nn(ma,sg,third,dat_loc,joe_).
+kozu  ~~> @nn(f,sg,third,acc,goat_).
+kozy  ~~> @nn(f,pl,third,nom_acc,goat_).
+máňa  ~~> @nn(f,sg,third,nom,molly_).
+máně  ~~> @nn(f,sg,third,dat_loc,molly_).
+kluci ~~> @nn(ma,pl,third,nom,boy_). 
+děvčata ~~> @nn(n,pl,third,nom_acc,girl_).
+děvčatech ~~> @nn(n,pl,third,loc,girl_).
+děti  ~~> @nn(f,pl,third,nom_acc,child_).
+dětem ~~> @nn(f,pl,third,dat,child_). 
+dětech ~~> @nn(f,pl,third,loc,child_).
+pusu  ~~> @nn(f,sg,third,acc,kiss_).
+knížky  ~~> @nn(f,pl,third,nom_acc,book_).
+pohlazení ~~> @nn(n,sg,third,_,caress_).
+pohlazení ~~> @nn(n,pl,third,nom_acc,caress_).
+pohlazením ~~> @nn(n,pl,third,dat,caress_).
+pohlazeních ~~> @nn(n,pl,third,loc,caress_).
+pivu ~~> @nn(n,sg,third,dat_loc,beer_).
+štěně ~~> @nn(n,sg,third,nom_acc,puppy_).
+kotě ~~> @nn(n,sg,third,nom_acc,kitten_).
+louka ~~> @nn(f,sg,third,nom,meadow_).
+louku ~~> @nn(f,sg,third,acc,meadow_).
+louce ~~> @nn(f,sg,third,dat_loc,meadow_).
+
+% adjectives
+
+malý  ~~> @aa(ma,sg,nom,small_).  
+malý  ~~> @aa(mi,sg,nom_acc,small_).
+malá  ~~> @aa(f,sg,nom,small_).
+malé  ~~> @aa(n,sg,nom_acc,small_).
+malému  ~~> @aa(mn,sg,dat,small_).
+malého  ~~> @aa(ma,sg,acc,small_).
+malou  ~~> @aa(f,sg,acc,small_).
+malém  ~~> @aa(mn,sg,loc,small_).
+malé  ~~> @aa(f,sg,loc,small_).
+malí  ~~> @aa(ma,pl,nom,small_).
+malé  ~~> @aa(f_mi,pl,nom_acc,small_).
+malá  ~~> @aa(n,pl,nom_acc,small_).
+malým  ~~> @aa(gend,pl,dat,small_).
+malé  ~~> @aa(ma,pl,acc,small_).
+
+% adverbs
+ 
+dobře ~~> (word,
+           ss:(cat:(head:(advb,
+                          pred:minus,
+                          mod:[(cat:head:verb,
+                               cont:VCont)]),
+                    val: @empty),
+               cont:(well_,
+                     arg1:VCont))).
+
+doma ~~> (word,
+           ss:(cat:(head:(advb,
+                          pred:minus,
+                          mod:[(cat:head:verb,
+                               cont:VCont)]),
+                    val: @empty),
+               cont:(at_home_,
+                     arg1:VCont))).
+
+doma ~~> (word,
+          ss:(cat:(head:(advb,
+                         pred:plus,
+                         mod:[]),
+                   val:(subj:[@nnval(_,Arg1)],
+                        comps:[])),
+              cont:(at_home_,
+                    arg1:Arg1))).
+
+% prepositions
+
+na ~~> (word,
+        ss:(cat:(head:(prep,
+                       pform:na_loc,
+                       pred:minus,
+                       mod:[(cat:head:verb,
+                            cont:VCont)]),
+                 val:(subj:e_list,
+                      comps:[@nnval(loc,PObjCont)])),
+            cont:(location_,
+                  arg1:VCont,
+                  arg2:PObjCont))). 
+
+na ~~> (word,
+        ss:(cat:(head:(prep,
+                       pred:minus,
+                       pform:na_acc,
+                       mod:[(cat:head:verb,
+                             cont:VCont)]),
+                 val:(subj:e_list,
+                      comps:[@nnval(acc,PObjCont)])),
+            cont:(direction_,
+                  arg1:VCont,
+                  arg2:PObjCont))).
+
+na ~~> (word,
+        ss:(cat:(head:(prep,
+                       pred:minus,
+                       pform:na_loc,
+                       mod:[(cat:head:noun,
+                             cont:(HCont,
+                                   idx:HIndex,
+                                   restr:HRestr))]),
+                 val:(subj:e_list,
+                      comps:[@nnval(loc,PObjCont)])),
+            cont:(idx:HIndex,
+                  restr:append(HRestr,[(location_,
+                                        arg1:HCont,
+                                        arg2:PObjCont)])))).
+
+na ~~> (word,
+        ss:(cat:(head:(prep,
+                       pform:na_loc,
+                       pred:plus,
+                       mod:[]),
+                 val:(subj:[@nnval(_,SubjCont)],
+                      comps:[@nnval(loc,PObjCont)])),
+            cont:(location_,
+                  arg1:SubjCont,
+                  arg2:PObjCont))). 
+
+po ~~> (word,
+        ss:(cat:(head:(prep,
+                       pform:po_loc,
+                       pred:minus,
+                       mod:[]),
+                 val:(subj:e_list,
+                      comps:[@nnval(loc,PObjCont)])),
+            cont:PObjCont)). 
+
+% verbs
+
+běží   ~~> @vi(pres,_,_,third,run_).
+
+spí   ~~> @vi(pres,_,_,third,sleep_).
+spal  ~~> @vi(past,m,sg,third,sleep_).
+spala ~~> @vi(past,f,sg,third,sleep_);
+          @vi(past,n,pl,third,sleep_).
+spali ~~> @vi(past,ma,pl,third,sleep_).
+spaly ~~> @vi(past,f_mi,pl,third,sleep_).
+spát ~~>  @vinf((subj:[@nnval(_,Arg1)],
+                 comps:[]),
+                (sleep_,arg1:Arg1)).
+
+
+touží ~~> @vv(pres,_,_,third,
+              (subj:[@nnval(nom,Arg1)],
+               comps:[(cat:head:pform:po_loc,
+                       cont:Arg2)]),
+              (desire_,arg1:Arg1,arg2:Arg2)).
+
+           
+honí ~~> @vt(pres,_,_,third,acc,chase_).
+honit ~~>  @vinf((subj:[@nnval(_,Arg1)],
+                  comps:[@nnval(acc,Arg2)]),
+                 (chase_,arg1:Arg1,arg2:Arg2)).
+
+prší ~~> @vv(pres,n,sg,third,@empty,rain_).
+pršet ~~> @vinf((subj:[],comps:[]),rain_).
+
+pase  ~~> @vt(pres,_,sg,third,acc,graze_).
+pasou ~~> @vt(pres,_,pl,third,acc,graze_).
+pásl  ~~> @vt(past,m,sg,third,acc,graze_).
+pásla ~~> @vt(past,f,sg,third,acc,graze_);
+          @vt(past,n,pl,third,acc,graze_).
+pásli ~~> @vt(past,ma,pl,third,acc,graze_).
+pásly ~~> @vt(past,f_mi,pl,third,acc,graze_).
+
+rozumí ~~> @vt(pres,_,sg,third,dat,understand_).
+rozumějí ~~> @vt(pres,_,pl,third,dat,understand_).
+
+chce  ~~> @vt(past,_,sg,third,acc,want_).
+chce   ~~>  @vv(pres,_,sg,third,
+               (subj:[@nnval(nom,Subj)],
+                comps:[@vinfval((subj:[(cont:Subj)],
+                                 comps:[]),
+                                Inf)]),
+               (want_,arg1:Subj,arg2:Inf)).
+
+chtějí ~~> @vt(past,_,pl,third,acc,want_).
+chtějí ~~> @vv(pres,_,pl,third,
+               (subj:[@nnval(nom,Subj)],
+                comps:[@vinfval((subj:[(cont:Subj)],
+                                 comps:[]),
+                                 Inf)]),
+               (want_,arg1:Subj,arg2:Inf)).
+
+dá  ~~> @vd(pres,_,sg,third,acc,dat,give_).
+dají  ~~> @vd(pres,_,pl,third,acc,dat,give_).
+dal ~~> @vd(past,m,sg,third,acc,dat,give_).
+dala ~~> @vd(past,f,sg,third,acc,dat,give_).
+dala ~~> @vd(past,n,pl,third,acc,dat,give_).
+dali ~~> @vd(past,ma,pl,third,acc,dat,give_).
+daly ~~> @vd(past,f_mi,pl,third,acc,dat,give_).
+
+% auxiliary
+
+je ~~> @vv(pres,_,sg,third,
+              (subj:[(Subj,@nnval(nom,_))],
+               comps:[(cat:(head:pred:plus,
+                            val:(subj:[Subj],
+                                 comps:[])),
+                       cont:Cont)]),
+               Cont).
+
+jsou ~~> @vv(pres,_,pl,third,
+	      (subj:[(Subj,@nnval(nom,_))],
+               comps:[(cat:(head:pred:plus,
+                            val:(subj:[Subj],
+                                 comps:[])),
+                       cont:Cont)]),
+               Cont).
+
+byl ~~> @vv(past,m,sg,third,
+	      (subj:[(Subj,@nnval(nom,_))],
+               comps:[(cat:(head:pred:plus,
+                            val:(subj:[Subj],
+                                 comps:[])),
+                       cont:Cont)]),
+               (time_prec,
+	        arg1:Cont)).
+
+byla ~~> @vv(past,f,sg,third,
+	      (subj:[(Subj,@nnval(nom,_))],
+               comps:[(cat:(head:pred:plus,
+                            val:(subj:[Subj],
+                                 comps:[])),
+                       cont:Cont)]),
+               (time_prec,
+	        arg1:Cont)).
+
+bylo ~~> @vv(past,n,sg,third,
+	      (subj:[(Subj,@nnval(nom,_))],
+               comps:[(cat:(head:pred:plus,
+                            val:(subj:[Subj],
+                                 comps:[])),
+                       cont:Cont)]),
+               (time_prec,
+	        arg1:Cont)).
+
+byla ~~> @vv(past,n,pl,third,
+	      (subj:[(Subj,@nnval(nom,_))],
+               comps:[(cat:(head:pred:plus,
+                            val:(subj:[Subj],
+                                 comps:[])),
+                       cont:Cont)]),
+               (time_prec,
+	        arg1:Cont)).
+
+byli ~~> @vv(past,ma,pl,third,
+	      (subj:[(Subj,@nnval(nom,_))],
+               comps:[(cat:(head:pred:plus,
+                            val:(subj:[Subj],
+                                 comps:[])),
+                       cont:Cont)]),
+               (time_prec,
+	        arg1:Cont)).
+
+byly ~~> @vv(past,f_mi,pl,third,
+	      (subj:[(Subj,@nnval(nom,_))],
+               comps:[(cat:(head:pred:plus,
+                            val:(subj:[Subj],
+                                 comps:[])),
+                       cont:Cont)]),
+               (time_prec,
+	        arg1:Cont)).
+
+
+
+% PRINCIPLES
+
+% Head Feature Principle
+
+phrase *> (ss:cat:head:HF,
+           head_dtr:ss:cat:head:HF).
+
+% Valency Principle
+
+hc_phrase *> ((ss:cat:val:(subj:[],
+                           comps:Comps),
+               head_dtr:ss:cat:val:(subj:[NH_ss],
+                                    comps:Comps),
+               nonh_dtr:ss:NH_ss);
+              (ss:cat:val:(subj:Subj,	    
+		           comps:del(NH_ss,HVal)),
+               head_dtr:ss:cat:val:(subj:Subj,
+                                    comps:HVal),
+               nonh_dtr:ss:NH_ss)).
+
+ha_phrase *> (ss:cat:val:Val,
+              head_dtr:ss:cat:val:Val).
+
+% Modifier Principle
+
+ha_phrase *> (head_dtr:ss:Hsynsem,
+              nonh_dtr:ss:cat:(head:(mod:[Hsynsem],
+				     pred:minus),
+                               val: @empty)).
+
+hc_phrase *> (nonh_dtr:ss:cat:head:mod:e_list).
+
+% Semantics Principle
+
+hc_phrase *> (ss:cont:Cont,
+              head_dtr:ss:cont:Cont).
+
+ha_phrase *> (ss:cont:Cont,
+              nonh_dtr:ss:cont:Cont).
+
+% Agreement Principle
+
+%% finite verbs with subject
+
+(word,
+ ss:cat:(head:vfin,
+         val:subj:ne_list)) 
+       *> (ss:cat:(head:agr:(num_a:Num,
+			     pers_a:Pers,
+			     gend_a:Gend),
+                   val:subj:[cont:idx:(num:Num,
+				       pers:Pers,
+				       gend:Gend)])).
+
+%% predicative adjectives
+
+(word,
+ ss:cat:(head:adj,
+         val:subj:ne_list)) 
+       *> (ss:cat:(head:agr:(num_a:Num,
+			     case_a:(Case;ins),
+			     gend_a:Gend),
+                   val:subj:[(cat:head:agr:(num_a:Num,
+			                    case_a:Case,
+			                    gend_a:Gend))])).
+
+%% default noun - some nouns can behave differently  
+
+(synsem,
+ cat:head:noun)
+       *>
+       (cat:head:(case:Case,
+		  agr:(case_a:Case,
+		       gend_a:Gend,
+		       num_a:Num)),
+	cont:idx:(gend:Gend,
+		  num:Num)).
+
+% Word order
+
+%% prepositions preceding NPs
+
+(hc_phrase,
+ ss:cat:head:prep)
+*>
+(h_init:plus).
+
+%% PPs postmodify nouns
+
+(phrase,
+ ss:cat:head:noun,
+ nonh_dtr:ss:cat:head:prep)
+*>
+(h_init:plus).
+
+%% adjectives precede nouns - this leaks
+
+(ha_phrase,
+ ss:cat:head:noun,
+ nonh_dtr:ss:cat:head:adj)
+*>
+(h_init:minus).   					   
+
+% Phrase Structure Rules
+
+%% complements
+
+headfin_c ##
+    (hc_phrase,
+     h_init:minus,
+     head_dtr:Head,
+     nonh_dtr:NonH)
+===>
+    cat> NonH,
+    cat> Head.
+
+headinit_c ##
+    (hc_phrase,
+     h_init:plus,
+     head_dtr:Head,
+     nonh_dtr:NonH)
+===>
+    cat> (Head,h_init:plus),
+    cat> NonH.
+
+%% adjuncts
+
+headfin_a ##
+    (ha_phrase,
+     h_init:minus,
+     head_dtr:Head,
+     nonh_dtr:NonH)
+===>
+    cat> NonH,
+    cat> Head.
+
+headinit_a ##
+    (ha_phrase,
+     h_init:plus,
+     head_dtr:Head,
+     nonh_dtr:NonH)
+===>
+    cat> (Head,h_init:plus),
+    cat> NonH.
+
+% Constraints
+
+% append(+,+,-)
+% This append assumes that the first or the third argument
+% are known to be non_empty or empty lists. 
+%
+
+fun append(+,+,-).
+append(X,Y,Z) if 
+   when( (X=(e_list;ne_list);
+          Z=(e_list;ne_list)) 
+       , undelayed_append(X,Y,Z)
+       ).
+
+undelayed_append([],L,L) if true.
+undelayed_append([H|T1],L,[H|T2]) if append(T1,L,T2).
+
+%%%
+
+fun del(+,+,-).
+del(X,Y,Z) if 
+   when( (Y=(e_list;ne_list);
+          Z=(e_list;ne_list)) 
+       , undelayed_del(X,Y,Z)
+       ).
+
+undelayed_del(El,[El|L],L) if true.
+undelayed_del(El,[H|T1],[H|T2]) if del(El,T1,T2).
+
+
+
+% Test sentences
+
+t(1, "máňa dala dětem kotě", @saturated, 1, 'Gram7: semantics; Molly gave children a kitten').
+t(2, "pepa pase kozy", @saturated, 1, 'Gram7: semantics; Joe grazes goats').
+t(3, "prší", @saturated, 1, 'Gram7: semantics; It is raining').
+t(4, "štěně dala máňa pepovi", @saturated, 1, 'Gram7: semantics; Molly gave Joe a kitten').
+t(5, "štěně dala máňa", @saturated, 0, 'Gram7: unfilled valency; Molly gave a kitten').
+t(6, "pepa prší", @saturated, 0, 'Gram7: missing valency; Joe is raining').
+t(7, "kozy daly knížky dětem", @saturated, 2, 'Gram7: ambiguity acc/nom; Goats gave books to children/Books gave goats to children').
+t(8, "děti honí kozy", @saturated, 2, 'Gram7: ambiguity acc/nom; Children chase goats/Goats chase children').
+t(9, "kluci chtějí spát", @saturated, 1, 'Gram7: valency inf; Boys want to sleep').
+t(10, "štěně chce honit kotě", @saturated, 1, 'Gram7: valency inf, no discontinuity; The puppy wants to chase the kitten').
+t(11, "chce honit kotě štěně", @saturated, 1, 'Gram7: valency inf, no discontinuity; The puppy wants to chase the kitten').
+t(12, "štěně kotě chce honit", @saturated, 0, 'Gram7: valency inf, no discontinuity'). 
+t(13, "knížky chtějí pršet", @saturated, 0, 'Gram7: zero valency; Books want to rain'). 
+t(14, "děvčata spaly", @saturated, 0, 'Gram7: disagreement pl n/f; The girls slept'). 
+t(15, "děvčata rozumějí dětem", @saturated, 1, 'Gram7: val dat; The girls understand children'). 
+t(16, "pepa rozumí děvčata", @saturated, 0, 'Gram7: failed val dat; Joe understands girls'). 
+t(17, "děti chtějí spát", @saturated, 1, 'Gram7: val inf; Children want to sleep'). 
+t(18, "máňa chce kozu", @saturated, 1, 'Gram7: val acc; Molly wants a goat').
+t(19, "děvčata chtějí děti", @saturated, 2, 'Gram7: ambiguity nom/acc; Girls want children').
+t(20, "pásli kluci", @saturated, 0, 'Gram7: order head initial; Boys grazed').
+t(21, "rozumějí dětem děvčata", @saturated, 1, 'Gram7: order VOS; Girls understand children'). 
+t(22, "chtějí děti spát", @saturated, 1, 'Gram7: order VSO; Children want to sleep'). 
+t(23, "kozu chce máňa", @saturated, 1, 'Gram7: order OVS; Molly wants a goat'). 
+t(24, "kozu děti pasou", @saturated, 1, 'Gram7: order OSV; Children graze a goat').
+t(25, "děti kozu pasou", @saturated, 1, 'Gram7: order SOV; Children graze a goat').
+t(26, "štěně kotě honí", @saturated, 2, 'Gram7: order OSV/SOV, ambiguity nom/acc; The kitten chases the puppy/The puppy chases the kitten').
+t(27, "honí štěně kotě", @saturated, 2, 'Gram7: order OSV/SOV, ambiguity nom/acc; The kitten chases the puppy/The puppy chases the kitten').
+t(28, "štěně honí kotě", @saturated, 2, 'Gram7: order SOV/VOS, ambiguity nom/acc; The kitten chases the puppy/The puppy chases the kitten').
+t(29, "pepa pase kozy dobře", @saturated, 1, 'Gram7: advb; Joe grazes the goats well').
+t(30, "děvčata spala dobře", @saturated, 1, 'Gram7: advb; Girls slept well').
+t(31, "štěně chce honit kotě dobře", @saturated, 2, 'Gram7: advb; The puppy wants to chase the kitten well').
+t(32, "štěně chce dobře honit kotě", @saturated, 2, 'Gram7: advb; The puppy wants to chase the kitten well').
+t(33, "dobře chce štěně honit kotě", @saturated, 2, 'Gram7: advb; The puppy wants to chase the kitten well').
+t(34, "malá máňa dala malým dětem malé kotě", @saturated, 1, 'Gram7: adj; Little Molly gave a little puppy to the little children').
+t(35, "malí kluci chtějí spát", @saturated, 1, 'Gram7: adj; The small boys want to sleep').
+t(36, "malé štěně honí malou kozu", @saturated, 1, 'Gram7: adj; The small puppy chases the small goat'). 
+t(37, "malé děti pasou malé kozy", @saturated, 2, 'Gram7: adj; Small children graze small goats/Small goats graze small children').
+t(38, "malou máňa spí", @saturated, 0, 'Gram7: adj disagr; Little Molly is sleeping').
+t(39, "malý kluci chtějí spát", @saturated, 0, 'Gram7: adj disagr; Small boys want to sleep').
+t(40, "malou štěně honí malá kozy", @saturated, 0, 'Gram7: adj disagr; Small puppy chases small goats'). 
+t(41, "malí děti pasou malé kozy", @saturated, 0, 'Gram7: adj disagr; Small children graze small goats').
+t(42, "štěně spí na louce", @saturated, 1, 'Gram7: prep; The puppy sleeps on the meadow').
+t(43, "štěně na louce spí", @saturated, 2, 'Gram7: prep; The puppy on the meadow sleeps/It is sleeping the puppy does on the meadow').
+t(44, "na louce štěně spí", @saturated, 1, 'Gram7: prep; As for the meadow, it is sleeping the puppy does on it').
+t(45, "štěně na louku běží", @saturated, 1, 'Gram7: prep; It is by running the puppy moves towards the meadow').
+t(46, "kotě spí na louce dobře", @saturated, 1, 'Gram7: prep; The kitten sleeps on the meadow well'). 
+t(47, "spí malé kotě na louce", @saturated, 2, 'Gram7: prep; Does the kitten sleep on the meadow?').
+t(48, "máňa dala pepovi na louce pusu", @saturated, 2, 'Gram7: prep; Molly gave Joe a kiss on the meadow').
+t(49, "kotě běží louku na", @saturated, 0, 'Gram7: prep; The cat is running to the meadow').
+t(50, "kotě touží po pohlazení", @saturated, 1, 'Gram7: nonlex prep; The kitten wishes for a stroke').
+t(51, "pepa touží na louce po malém pivu", @saturated, 1, 'Gram7: nonlex prep; Joe wishes on a meadow for a small beer').
+t(52, "štěně bylo malé", @saturated, 1, 'Gram7: past copula; The puppy was small').
+t(53, "byla děvčata na louce", @saturated, 1, 'Gram7: past copula; The girls were on the meadow').
+t(54, "na louce byly děti malé", @saturated, 1, 'Gram7: past copula; On the meadow the children were small').
+t(55, "děti na louce byly malé", @saturated, 2, 'Gram7: past copula; The children on the meadow were small').
+t(56, "děvčata byly malé", @saturated, 0, 'Gram7: past copula - disagreement; The girls were small').
+t(57, "kluci byli malý", @saturated, 0, 'Gram7: past copula - disagreement; The boys were small').
+t(58, "kotě bylo doma", @saturated, 1, 'Gram7: past copula; The kitten was at home').
