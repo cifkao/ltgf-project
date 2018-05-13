@@ -43,6 +43,7 @@ bot
       lexical
          na_acc
          na_loc
+         do_gen
       non_lexical
          po_loc
    num
@@ -71,6 +72,7 @@ bot
          dat
          loc
       ins
+      gen
    bool
       plus
       minus
@@ -103,6 +105,9 @@ bot
                small_
                fall_
                wheelbarrow_
+               rifle_
+               rye_
+               give_up_
                time_prec 
                rel12 arg2:cont
                   location_
@@ -112,6 +117,7 @@ bot
                   graze_
                   understand_
                   desire_
+                  throw_
                   rel123 arg3:cont
                      give_
       index num:num gend:gend pers:pers              

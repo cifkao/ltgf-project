@@ -159,6 +159,8 @@ louka ~~> @nn(f,sg,third,nom,meadow_).
 louku ~~> @nn(f,sg,third,acc,meadow_).
 louce ~~> @nn(f,sg,third,dat_loc,meadow_).
 trakaře ~~> @nn(m,pl,third,nom_acc,wheelbarrow_).
+flintu ~~> @nn(f,sg,third,acc,rifle_).
+žita ~~> @nn(n,sg,third,gen,rye_).
 
 % adjectives
 
@@ -228,6 +230,18 @@ na ~~> (word,
                              cont:VCont)]),
                  val:(subj:e_list,
                       comps:[@nnval(acc,PObjCont)])),
+            cont:(direction_,
+                  arg1:VCont,
+                  arg2:PObjCont))).
+
+do ~~> (word,
+        ss:(cat:(head:(prep,
+                       pred:minus,
+                       pform:do_gen,
+                       mod:[(cat:head:verb,
+                             cont:VCont)]),
+                 val:(subj:e_list,
+                      comps:[@nnval(gen,PObjCont)])),
             cont:(direction_,
                   arg1:VCont,
                   arg2:PObjCont))).
@@ -337,6 +351,8 @@ dala ~~> @vd(past,f,sg,third,acc,dat,give_).
 dala ~~> @vd(past,n,pl,third,acc,dat,give_).
 dali ~~> @vd(past,ma,pl,third,acc,dat,give_).
 daly ~~> @vd(past,f_mi,pl,third,acc,dat,give_).
+
+hodil ~~> @vt(past,ma,sg,third,acc,throw_).
 
 % auxiliary
 
