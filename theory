@@ -311,11 +311,11 @@ honit ~~>  @vinf((subj:[@nnval(_,Arg1)],
 prší ~~> @vv(pres,n,sg,third,@empty,rain_).
 pršet ~~> @vinf((subj:[],comps:[]),rain_).
 
-padají ~~> (@vi(pres,_,pl,third,fall_);
-            @vv(pres,_,pl,third,
-                (subj:[@nnval(nom,(restr:[wheelbarrow_]))],
-                 comps:[]),
-                rain_)).
+padají ~~> @vi(pres,_,pl,third,fall_);
+           @vv(pres,_,pl,third,
+               (subj:[@nnval(nom,(restr:[wheelbarrow_]))],
+                comps:[]),
+               rain_).
 
 pase  ~~> @vt(pres,_,sg,third,acc,graze_).
 pasou ~~> @vt(pres,_,pl,third,acc,graze_).
