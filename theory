@@ -244,7 +244,18 @@ do ~~> (word,
                       comps:[@nnval(gen,PObjCont)])),
             cont:(direction_,
                   arg1:VCont,
-                  arg2:PObjCont))).
+                  arg2:PObjCont));
+        ss:(cat:(head:(prep,
+                       pred:minus,
+                       pform:do_gen,
+                       mod:[(cat:head:verb,
+                             cont:(throw_,
+                                   arg1:SubjCont,
+                                   arg2:(restr:[rifle_])))]),
+                 val:(subj:e_list,
+                      comps:[@nnval(gen,(restr:[rye_]))])),
+            cont:(give_up_,
+                  arg1:SubjCont))).
 
 na ~~> (word,
         ss:(cat:(head:(prep,
@@ -666,3 +677,4 @@ t(57, "kluci byli malý", @saturated, 0, 'Gram7: past copula - disagreement; The
 t(58, "kotě bylo doma", @saturated, 1, 'Gram7: past copula; The kitten was at home').
 t(58, "padají trakaře", @saturated, 2, 'idiom: wheelbarrows are falling (its raining cats and dogs)').
 t(58, "padají děti", @saturated, 1, 'not idiom: children are falling').
+t(58, "pepa hodil flintu do žita", @saturated, 2, 'idiom: joe threw the rifle in the rye (he gave up)').
