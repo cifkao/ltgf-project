@@ -107,7 +107,9 @@ bot
                wheelbarrow_
                rifle_
                rye_
+               scythe_
                give_up_
+               feel_cold_
                time_prec 
                rel12 arg2:cont
                   location_
@@ -118,6 +120,7 @@ bot
                   understand_
                   desire_
                   throw_
+                  hammer_
                   rel123 arg3:cont
                      give_
       index num:num gend:gend pers:pers              
