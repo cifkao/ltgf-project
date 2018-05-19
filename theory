@@ -350,6 +350,9 @@ dala ~~> @vd(past,n,pl,third,acc,dat,give_).
 dali ~~> @vd(past,ma,pl,third,acc,dat,give_).
 daly ~~> @vd(past,f_mi,pl,third,acc,dat,give_).
 
+hodit ~~> @vinf((subj:[@nnval(_,Arg1)],
+                 comps:[@nnval(acc,Arg2)]),
+                (throw_,arg1:Arg1,arg2:Arg2)).
 hodil ~~> @vt(past,ma,sg,third,acc,throw_).
 
 klepe ~~> @vt(pres,_,sg,third,acc,hammer_).
@@ -686,3 +689,4 @@ t(59, "padají trakaře", @saturated, 2, 'idiom: wheelbarrows are falling (its r
 t(60, "padají děti", @saturated, 1, 'not idiom: children are falling').
 t(61, "máňa klepe kosu", @saturated, 2, 'idiom: molly is hammering the scythe (she feels cold)').
 t(62, "pepa hodil flintu do žita", @saturated, 2, 'idiom: joe threw the rifle in the rye (he gave up)').
+t(63, "děvčata chtějí hodit flintu do žita", @saturated, 3, 'idiom: the girls want to throw the rifle in the rye (to give up)').
