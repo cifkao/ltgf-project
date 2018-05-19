@@ -429,9 +429,9 @@ byly ~~> @vv(past,f_mi,pl,third,
 
 fun make_cont(+,-).
 
-%make_cont(+Synsem,-Cont).
-make_cont((SS, cont:(Cont, literal:plus)), Cont) if true.
-make_cont((SS, cont:(LCont, literal:minus)), ICont)
+%make_cont(+Sign,-Cont).
+make_cont(ss:cont:(Cont, literal:plus), Cont) if true.
+make_cont(ss:cont:(LCont, literal:minus), ICont)
    if idiom(LCont, ICont).
 
 %idiom(+LiteralCont,-IdiomaticCont).
@@ -480,11 +480,11 @@ hc_phrase *> (nonh_dtr:ss:cat:head:mod:e_list).
 
 % Semantics Principle
 
-hc_phrase *> (ss:cont:make_cont(SS),
-              head_dtr:ss:SS).
+hc_phrase *> (ss:cont:make_cont(Dtr),
+              head_dtr:Dtr).
 
-ha_phrase *> (ss:cont:make_cont(SS),
-              nonh_dtr:ss:SS).
+ha_phrase *> (ss:cont:make_cont(Dtr),
+              nonh_dtr:Dtr).
 
 % Agreement Principle
 
