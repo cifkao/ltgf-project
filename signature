@@ -77,7 +77,7 @@ bot
       plus
       minus
    cont_or_index
-      cont 
+      cont literal:bool
          nom_obj idx:index restr:list
          rel
             rel0

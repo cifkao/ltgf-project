@@ -427,10 +427,14 @@ byly ~~> @vv(past,f_mi,pl,third,
 	        arg1:Cont)).
 
 
-fun idiom(+,-).
+fun make_cont(+,-).
+
+%make_cont(+Synsem,-Cont).
+make_cont((SS, cont:(Cont, literal:plus)), Cont) if true.
+make_cont((SS, cont:(LCont, literal:minus)), ICont)
+   if idiom(LCont, ICont).
 
 %idiom(+LiteralCont,-IdiomaticCont).
-idiom(X, X) if true.
 idiom((fall_, arg1:(restr:[wheelbarrow_], idx:num:pl)), rain_) if true.
 idiom((hammer_, arg1:Arg1, arg2:(restr:[scythe_], idx:num:sg)),
       (feel_cold_, arg1:Arg1)) if true.
@@ -441,7 +445,6 @@ idiom((direction_,
        arg2:restr:[rye_]),
       (give_up_,
        arg1:Arg1)) if true.
-
 
 % PRINCIPLES
 
@@ -477,11 +480,11 @@ hc_phrase *> (nonh_dtr:ss:cat:head:mod:e_list).
 
 % Semantics Principle
 
-hc_phrase *> (ss:cont:idiom(Cont),
-              head_dtr:ss:cont:Cont).
+hc_phrase *> (ss:cont:make_cont(SS),
+              head_dtr:ss:SS).
 
-ha_phrase *> (ss:cont:idiom(Cont),
-              nonh_dtr:ss:cont:Cont).
+ha_phrase *> (ss:cont:make_cont(SS),
+              nonh_dtr:ss:SS).
 
 % Agreement Principle
 
