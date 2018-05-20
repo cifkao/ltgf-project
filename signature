@@ -1,13 +1,4 @@
-% LTGF
-% GRAMMAR 7
-% synsem, index, n_agr/v_agr
-% hc/ha-phrase, mod, advb, adj
-% arg1...:nom_obj
-% prep na/acc,loc modif. V, N
-% h_init:plus do ss (postmodification N PP)
-% nonlexical prep (toužit po)
-% copula, pred +/-
-
+% IDIOMS
 % Signature
 
 type_hierarchy
@@ -19,7 +10,7 @@ bot
          ha_phrase
    synsem cat:cat cont:cont
    cat head:head val:val 
-   val subj:list comps:list
+   val subj:list comps:list xadjs:list
    head mod:list pred:bool
       flective agr:agr
          nominal agr:n_agr case:case
@@ -107,7 +98,9 @@ bot
                wheelbarrow_
                rifle_
                rye_
+               scythe_
                give_up_
+               feel_cold_
                time_prec 
                rel12 arg2:cont
                   location_
@@ -118,6 +111,7 @@ bot
                   understand_
                   desire_
                   throw_
+                  hammer_
                   rel123 arg3:cont
                      give_
       index num:num gend:gend pers:pers              
