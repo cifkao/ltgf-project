@@ -515,7 +515,7 @@ hc_phrase *> ((ss:cat:val:(subj:[],
 
 ha_phrase *> (ss:cat:val:(subj:Subj,
                           comps:Comps,
-                          xadjs:maybe_del(NH_ss, XAdjs)),
+                          xadjs:try_del(NH_ss, XAdjs)),
               head_dtr:ss:cat:val:(subj:Subj,
                                    comps:Comps,
                                    xadjs:XAdjs),
@@ -681,16 +681,16 @@ undelayed_del(El,[H|T1],[H|T2]) if del(El,T1,T2).
 
 %%%
 
-fun maybe_del(+,+,-).
-maybe_del(X,Y,Z) if 
+fun try_del(+,+,-).
+try_del(X,Y,Z) if 
    when( (Y=(e_list;ne_list);
           Z=(e_list;ne_list)) 
-       , undelayed_maybe_del(X,Y,Z)
+       , undelayed_try_del(X,Y,Z)
        ).
 
-undelayed_maybe_del(_,[],[]) if true.
-undelayed_maybe_del(El,[El|L],L) if true, !.
-undelayed_maybe_del(El,[H|T1],[H|T2]) if maybe_del(El,T1,T2).
+undelayed_try_del(_,[],[]) if true.
+undelayed_try_del(El,[El|L],L) if true, !.
+undelayed_try_del(El,[H|T1],[H|T2]) if try_del(El,T1,T2).
 
 
 % Test sentences
