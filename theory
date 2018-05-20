@@ -757,4 +757,5 @@ t(59, "padají trakaře", @saturated, 2, 'idiom: wheelbarrows are falling (its r
 t(60, "padají děti", @saturated, 1, 'not idiom: children are falling').
 t(61, "máňa klepe kosu", @saturated, 2, 'idiom: molly is hammering the scythe (she feels cold)').
 t(62, "pepa hodil flintu do žita", @saturated, 2, 'idiom: joe threw the rifle in the rye (he gave up)').
-t(63, "děvčata chtějí hodit flintu do žita", @saturated, 3, 'idiom: the girls want to throw the rifle in the rye (give up)').
+t(63, "pepa hodil dobře flintu do žita", @saturated, 2, 'idiom: joe threw the rifle in the rye (gave up) well').
+t(64, "děvčata chtějí hodit flintu do žita", @saturated, 3, 'idiom: the girls want to throw the rifle in the rye (give up)').
