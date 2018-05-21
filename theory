@@ -434,17 +434,23 @@ jsou ~~> @vv(pres,_,pl,third,
               Cont).
 
 byl ~~> @vv(past,m,sg,third,
-	      (subj:[(Subj,@nnval(nom,_))],
+              (subj:[(Subj,@nnval(nom,_))],
                comps:[(cat:(head:pred:plus,
                             val:(subj:[Subj],
                                  comps:[], xadjs:[])),
                        cont:Cont)],
                xadjs:[]),
               (time_prec,
-	        arg1:Cont)).
+               arg1:Cont));
+        @vv(past,m,sg,third,
+            (subj:[@nnval(nom,Subj)],
+             comps:[(ss_phon:[(a_ ten),(a_ tam)])],
+             xadjs:[]),
+            (disappear_,
+             arg1:Subj)).
 
 byla ~~> @vv(past,f,sg,third,
-	      (subj:[(Subj,@nnval(nom,_))],
+              (subj:[(Subj,@nnval(nom,_))],
                comps:[(cat:(head:pred:plus,
                             val:(subj:[Subj],
                                  comps:[],
@@ -452,7 +458,13 @@ byla ~~> @vv(past,f,sg,third,
                        cont:Cont)],
                xadjs:[]),
               (time_prec,
-	        arg1:Cont)).
+               arg1:Cont));
+         @vv(past,f,sg,third,
+             (subj:[@nnval(nom,Subj)],
+              comps:[(ss_phon:[(a_ ta),(a_ tam)])],
+              xadjs:[]),
+             (disappear_,
+              arg1:Subj)).
 
 bylo ~~> @vv(past,n,sg,third,
 	      (subj:[(Subj,@nnval(nom,_))],
@@ -488,7 +500,7 @@ byli ~~> @vv(past,ma,pl,third,
 	        arg1:Cont)).
 
 byly ~~> @vv(past,f_mi,pl,third,
-	      (subj:[(Subj,@nnval(nom,_))],
+              (subj:[(Subj,@nnval(nom,_))],
                comps:[(cat:(head:pred:plus,
                             val:(subj:[Subj],
                                  comps:[],
@@ -496,15 +508,23 @@ byly ~~> @vv(past,f_mi,pl,third,
                        cont:Cont)],
                xadjs:[]),
               (time_prec,
-	        arg1:Cont)).
+               arg1:Cont));
+         @vv(past,f_mi,pl,third,
+             (subj:[@nnval(nom,Subj)],
+              comps:[(ss_phon:[(a_ ty),(a_ tam)])],
+              xadjs:[]),
+             (disappear_,
+              arg1:Subj)).
 
 
 % fixed expressions
 
 co ~~> @fe.
 proto ~~> @fe.
-
-fphon([(a_ co), (a_ proto)]) if true.
+ten ~~> @fe.
+ta ~~> @fe.
+ty ~~> @fe.
+tam ~~> @fe.
 
 % PRINCIPLES
 
@@ -680,11 +700,9 @@ fixed_expr ##
      h_init:plus,
      head_dtr:Head,
      nonh_dtr:NonH,
-     ss:cat:head:fixed,
-     phon:Phon)
+     ss:cat:head:fixed)
 ===>
-    goal> fphon(append(_, Phon)),
-    cat> (Head,word,h_init:plus),
+    cat> (Head,word),
     cat> (NonH,(word;fexpr),ss:cat:head:fixed).
 
 % Constraints
@@ -780,7 +798,11 @@ t(58, "kotě bylo doma", @saturated, 1, 'Gram7: past copula; The kitten was at h
 t(59, "padají trakaře", @saturated, 2, 'idiom: wheelbarrows are falling (its raining cats and dogs)').
 t(60, "padají děti", @saturated, 1, 'not idiom: children are falling').
 t(61, "máňa klepe kosu", @saturated, 2, 'idiom: molly is hammering the scythe (she feels cold)').
-t(62, "pepa hodil flintu do žita", @saturated, 2, 'idiom: joe threw the rifle in the rye (he gave up)').
-t(63, "pepa hodil dobře flintu do žita", @saturated, 2, 'idiom: joe threw the rifle in the rye (gave up) well').
-t(64, "děvčata chtějí hodit flintu do žita", @saturated, 3, 'idiom: the girls want to throw the rifle in the rye (give up)').
+t(62, "pepa hodil flintu do žita", @saturated, 2, 'idiom: joe threw (his) rifle in the rye (he gave up)').
+t(63, "pepa hodil dobře flintu do žita", @saturated, 2, 'idiom: joe threw (his) rifle in the rye (gave up) well').
+t(64, "děvčata chtějí hodit flintu do žita", @saturated, 3, 'idiom: the girls want to throw (their) rifle in the rye (give up)').
 t(65, "máňa dala pepovi co proto", @saturated, 1, 'idiom: molly punished joe').
+t(66, "pepa byl ten tam", @saturated, 1, 'idiom: joe disappeared').
+t(67, "máňa byla ten tam", @saturated, 0, 'bad idiom: molly disappeared').
+t(68, "máňa byla ta tam", @saturated, 1, 'idiom: molly disappeared').
+t(69, "kozy byly ty tam", @saturated, 1, 'idiom: the goats disappeared').
