@@ -132,6 +132,9 @@ vd(Vform-vform,Gend-gend,Num-num,Pers-pers,Case1-case,Case2-case,Rel-rel123) :=
          xadjs:[]),
         (Rel,arg1:Arg1,arg2:Arg2,arg3:Arg3)).
 
+% fixed expression words
+fe := (word, ss:cat:(val: @empty, head:(fixed, mod:e_list))).
+
 
 % LEXICON
 
@@ -365,7 +368,14 @@ chtějí ~~> @vv(pres,_,pl,third,
 dá  ~~> @vd(pres,_,sg,third,acc,dat,give_).
 dají  ~~> @vd(pres,_,pl,third,acc,dat,give_).
 dal ~~> @vd(past,m,sg,third,acc,dat,give_).
-dala ~~> @vd(past,f,sg,third,acc,dat,give_).
+dala ~~> @vd(past,f,sg,third,acc,dat,give_);
+         % dala * co proto
+         @vv(past,f,sg,third,
+             (subj:[@nnval(nom,Arg1)],
+              comps:[@nnval(dat,Arg2),
+                     (ss_phon:[(a_ co),(a_ proto)])],
+              xadjs:[]),
+             (punish_,arg1:Arg1,arg2:Arg2)).
 dala ~~> @vd(past,n,pl,third,acc,dat,give_).
 dali ~~> @vd(past,ma,pl,third,acc,dat,give_).
 daly ~~> @vd(past,f_mi,pl,third,acc,dat,give_).
@@ -489,6 +499,12 @@ byly ~~> @vv(past,f_mi,pl,third,
 	        arg1:Cont)).
 
 
+% fixed expressions
+
+co ~~> @fe.
+proto ~~> @fe.
+
+fphon([(a_ co), (a_ proto)]) if true.
 
 % PRINCIPLES
 
@@ -519,6 +535,8 @@ ha_phrase *> (ss:cat:val:(subj:Subj,
               head_dtr:ss:cat:val:(subj:Subj,
                                    comps:Comps),
               nonh_dtr:ss:NH_ss).
+
+fexpr *> (ss:cat:val:(subj:[],comps:[],xadjs:[])).
 
 % Modifier Principle
 
@@ -607,6 +625,12 @@ ha_phrase *> ((ss:(cont:NHCont,
 *>
 (h_init:minus).   					   
 
+% Synsem Phonstring Hack
+
+sign
+*>
+(phon:Phon, ss:ss_phon:Phon).
+
 % Phrase Structure Rules
 
 %% complements
@@ -649,6 +673,20 @@ headinit_a ##
     cat> (Head,h_init:plus),
     cat> NonH.
 
+%% fixed expressions
+
+fixed_expr ##
+    (fexpr,
+     h_init:plus,
+     head_dtr:Head,
+     nonh_dtr:NonH,
+     ss:cat:head:fixed,
+     phon:Phon)
+===>
+    goal> fphon(append(_, Phon)),
+    cat> (Head,word,h_init:plus),
+    cat> (NonH,(word;fexpr),ss:cat:head:fixed).
+
 % Constraints
 
 % append(+,+,-)
@@ -677,7 +715,6 @@ del(X,Y,Z) if
 
 undelayed_del(El,[El|L],L) if true.
 undelayed_del(El,[H|T1],[H|T2]) if del(El,T1,T2).
-
 
 % Test sentences
 
@@ -746,3 +783,4 @@ t(61, "máňa klepe kosu", @saturated, 2, 'idiom: molly is hammering the scythe 
 t(62, "pepa hodil flintu do žita", @saturated, 2, 'idiom: joe threw the rifle in the rye (he gave up)').
 t(63, "pepa hodil dobře flintu do žita", @saturated, 2, 'idiom: joe threw the rifle in the rye (gave up) well').
 t(64, "děvčata chtějí hodit flintu do žita", @saturated, 3, 'idiom: the girls want to throw the rifle in the rye (give up)').
+t(65, "máňa dala pepovi co proto", @saturated, 1, 'idiom: molly punished joe').

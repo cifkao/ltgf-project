@@ -8,7 +8,8 @@ bot
       phrase head_dtr:sign nonh_dtr:sign dtrs:list
          hc_phrase
          ha_phrase
-   synsem cat:cat cont:cont
+         fexpr
+   synsem cat:cat cont:cont ss_phon:list
    cat head:head val:val 
    val subj:list comps:list xadjs:list
    head mod:list pred:bool
@@ -21,6 +22,7 @@ bot
          vinf
          advb
          prep pform:pform
+         fixed
       verb 
          vfin 
          vinf 
@@ -112,6 +114,7 @@ bot
                   desire_
                   throw_
                   hammer_
+                  punish_
                   rel123 arg3:cont
                      give_
       index num:num gend:gend pers:pers              
