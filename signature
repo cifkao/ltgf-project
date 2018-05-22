@@ -1,13 +1,4 @@
-% LTGF
-% GRAMMAR 7
-% synsem, index, n_agr/v_agr
-% hc/ha-phrase, mod, advb, adj
-% arg1...:nom_obj
-% prep na/acc,loc modif. V, N
-% h_init:plus do ss (postmodification N PP)
-% nonlexical prep (toužit po)
-% copula, pred +/-
-
+% IDIOMS
 % Signature
 
 type_hierarchy
