@@ -1,5 +1,4 @@
-% LTGF
-% Grammmar 7 -- synsem, index, nom_agr/verb_agr
+% IDIOMS
 % Theory
 
 :- discontiguous '*>'/2.
