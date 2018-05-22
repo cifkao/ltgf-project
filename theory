@@ -444,8 +444,8 @@ idiom((hammer_, arg1:Arg1, arg2:(restr:[scythe_], idx:num:sg)),
 idiom((direction_,
        arg1:(throw_,
              arg1:Arg1,
-             arg2:restr:[rifle_]),
-       arg2:restr:[rye_]),
+             arg2:(restr:[rifle_], idx:num:sg)),
+       arg2:(restr:[rye_], idx:num:sg)),
       (give_up_,
        arg1:Arg1)) if true.
 
